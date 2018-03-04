@@ -215,13 +215,7 @@ Hibernate 持久化类的要求：
 </hibernate-mapping>
 ```
 
-持久化对象属性的类型与 Hibernate 映射类型与 SQL 类型对应表
 
-![1](/images/hibernate_1.png)
-
-![2](/images/hibernate_2.png)
-
-![3](/images/hibernate_3.png)
 
 ## 创建 log4j 日志配置文件 log4j.properties
 ```

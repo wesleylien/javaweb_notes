@@ -224,6 +224,14 @@ length |
 precision | 有效数字位的位数
 scale | 小数位数
 
+### 持久化对象属性的类型与 Hibernate 映射类型与 SQL 类型对应表
+
+![1](/images/hibernate_1.png)
+
+![2](/images/hibernate_2.png)
+
+![3](/images/hibernate_3.png)
+
 ### formula 属性
 
 
@@ -664,9 +672,12 @@ StuCourse02.hbm.xml:
 * 不要用怪异的连接映射
 * 偏爱双向关联
 
+
+## 下面未完成
+
 ## 命名查询的设置
 
-## cascade
+## cascade inverse
 
-持久化类的继承映射
+## 持久化类的继承映射
 discriminator-value
