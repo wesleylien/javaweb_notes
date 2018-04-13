@@ -1,12 +1,8 @@
-[Spring 概述](#spring-概述)   
-
-    [Spring 的模块化与生态](#spring-的模块化与生态)   
-
-    [Spring 框架的原则](#spring-框架的原则)   
-
-[IOC 与 DI](#ioc-与-di)   
-
-[AOP](#aop)   
+* [Spring 概述](#spring-概述)     
+  * [Spring 的模块化与生态](#spring-的模块化与生态)   
+  * [Spring 框架的原则](#spring-框架的原则)   
+* [IOC 与 DI](#ioc-与-di)   
+* [AOP](#aop)   
 
 ## Spring 概述
 Spring 是一个轻量级**控制反转(IoC)**和**面向切面编程(AOP)**的**容器框架**，它主要是为了解决企业应用开发的复杂性而诞生的
