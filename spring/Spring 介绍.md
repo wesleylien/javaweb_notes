@@ -14,29 +14,66 @@ Spring 是一个轻量级**控制反转(IoC)**和**面向切面编程(AOP)**的*
 范围：任何Java应用
 
 ### Spring 的模块化与生态
-Spring 是模块化的，它的模块有：
+Spring 是模块化的，它的结构如图：
+
+![Spring Framework Runtime](/images/spring_1.png)
+
+如图，它的模块有：
 * 核心容器(Core Container)
     * spring-core
     * spring-beans
     * spring-context
     * spring-context-support
-    * spring-expression
-* AOP
+    * spring-expression( SpEL )
+
+    **spring-core** 和 **spring-beans** 提供框架的基础部分，包括 IoC 和 DI 功能。容器 BeanFactory 是一个复杂的工厂模式的实现。不需要可以编程的单例，并允许您将配置和特定的依赖从你的实际程序逻辑中解耦。   
+    **spring-context** 建立且提供于在 Core 和 Beans 模块的基础上，它是一种在框架类型下实现对象存储操作的手段，有一点像 JNDI 注册。Context 继承了 Beans 模块的特性，并且增加了对国际化的支持（例如用在资源包中）、事件广播、资源加载和创建上下文（例如一个 Servlet 容器）。Context 模块也支持例如 EJB，JMX 和基础远程这样的 JavaEE 特性。ApplicationContext 是 Context 模块的焦点。    
+    **spring-context-support** 提供对常见第三方库的支持集成进 Spring 应用上下文，如缓存 (EhCache, Guava, JCache), 通信 (JavaMail), 调度 (CommonJ, Quartz) 和模板引擎 (FreeMarker, JasperReports, Velocity)。    
+    **spring-expression** 模块提供了一个强大的Expression Language（表达式语言）用来在运行时查询和操作对象图。这是作为 JSP2.1 规范所指定的统一表达式语言（unified EL）的一种延续。这种语言支持对属性值、属性参数、方法调用、数组内容存储、收集器和索引、逻辑和算数操作及命名变量，并且通过名称从 Spring 的控制反转容器中取回对象。表达式语言模块也支持 List 的映射和选择，正如像常见的列表汇总一样。   
+
+* AOP、Aspects 与 Instrumentation
     * spring-aop
     * spring-aspects
+    * spring-instrument
+    * spring-instrument-tomcat
+
+    **spring-aop** 模块提供 AOP Alliance-compliant（联盟兼容）的面向切面编程实现，允许你自定义，比如，方法拦截器和切入点完全分离代码。使用源码级别元数据的功能，你也可以在你的代码中加入 behavioral information (行为信息)，在某种程度上类似于 .NET 属性。     
+    单独的 **spring-aspects** 模块提供了集成使用 AspectJ。    
+    **spring-instrument** 模块提供了类 instrumentation 的支持和在某些应用程序服务器使用类加载器实现。    
+    **spring-instrument-tomcat** 用于 Tomcat Instrumentation 代理。    
+
 * 消息(Message)
-    * spring-message
+    * spring-messaging   
+
+    Spring Framework 4 包含了 **spring-messaging** 模块，从 Spring 集成项目中抽象出来，比如 Message, MessageChannel, MessageHandler 及其他用来提供基于消息的基础服务。该模块还包括一组消息映射方法的注解，类似于基于编程模型 Spring MVC 的注解。   
+
 * Web
     * spring-web
     * spring-webmvc
     * spring-websocket
     * spring-webmvc-portlet
-* 数据访问/继承(Data Access/Intergration)
+
+    **spring-web** 模块提供了基本的面向 web 开发的集成功能，例如多方文件上传、使用 Servlet listeners 和 Web 开发应用程序上下文初始化 IoC 容器。它也包含 HTTP 客户端以及 Spring 远程访问的支持的 web 相关的部分。    
+    **spring-webmvc** 模块（也被称为 Web Servlet 模块）包含 Spring 的 MVC 和 REST Web Services 实现的 Web 应用程序。Spring 的 MVC 框架提供了 domain model（领域模型）代码和 web form (网页) 之间的完全分离，并且集成了 Spring Framework 所有的其他功能。    
+    **spring-webmvc-portlet** 模块（也被称为 Web-Portlet 模块）提供了MVC 模式的实现是用一个 Portlet 的环境和 spring-webmvc 模块功能的镜像。    
+
+* 数据访问/集成(Data Access/Intergration)    
     * spring-jdbc
     * spring-tx
     * spring-orm
     * spring-oxm
     * spring-jms
+
+    **spring-jdbc** 模块提供了不需要编写冗长的JDBC代码和解析数据库厂商特有的错误代码的 JDBC 抽象层。    
+    **spring-tx** 模块的支持可编程和声明式事务管理，用于实现了特殊的接口的和你所有的 POJO 类。   
+    **spring-orm** 模块提供了流行的 object-relational mapping（对象-关系映射）API集成层，其包含 JPA，JDO，Hibernate。使用 ORM 包，你可以使用所有的 O/R 映射框架结合所有 Spring 提供的特性，比如前面提到的简单声明式事务管理功能。      
+    **spring-oxm** 模块提供抽象层用于支持 Object/XML mapping （对象/XML映射）的实现,如 JAXB、Castor、XMLBeans、JiBX 和 XStream 的。    
+    **spring-jms** 模块（Java Messaging Service）包含生产和消费信息的功能。 从 Spring Framework 4.1 开始提供集成 spring-messaging 模块。     
+
+* Test   
+    * spring-test
+
+    **spring-test** 模块支持通过组合 JUnit 或 TestNG 来进行单元测试和集成测试 。它提供了连续的加载 ApplicationContext 并且缓存这些上下文。它还提供了 mock object（模仿对象），您可以使用隔离测试你的代码。
 
 Spring 的生态：Spring 不仅仅是 Spring 框架本身，还提供了大量基于 Spring 的项目，如：Spring MVC、Spring Boot……
 
