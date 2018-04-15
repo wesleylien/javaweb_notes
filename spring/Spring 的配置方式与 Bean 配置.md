@@ -7,6 +7,7 @@
 * [Bean 的作用域](#bean-的作用域)
     * [协调作用域不同步的 Bean](#协调作用域不同步的-bean)
 * [Bean 的生命周期](#bean-的生命周期)
+    * [Bean 的生命周期一系列关键点](#bean-的生命周期一系列关键点)
 * [注入嵌套 Bean](#注入嵌套-bean)
 * [注入集合类](#注入集合类)
 * [组合属性注入](#组合属性注入)
@@ -28,7 +29,7 @@ Spring 的配置方式有：
 
 Spring 容器负责解析这些配置元数据进行 Bean 初始化、配置和依赖管理
 
-其中，xml 配置或 Java 配置是必须的，两者择其一或者两者都使用（很少），由容器负责加载。而注解配置的方式，需要在 xml 配置或 Java 配置指定扫描路径
+其中，xml 配置或 Java 配置是必须的，两者择其一或者两者都使用（很少），由容器负责加载。而注解配置的方式，需要在 xml 配置或 Java 配置**指定扫描路径**
 
 在 Spring xml 配置文件中指定搜索路径(context Schema)为：
 ``` xml
@@ -254,9 +255,7 @@ xml 配置方式
 ```
 
 ## Bean 的生命周期
-Spring 可以管理 singleton 作用域的 Bean 的生命周期（何时创建、何时初始化完成、何时准备要销毁）
-
-prototype 作用域的 Bean ，Spring 容器仅仅负责创建
+Spring 可以管理 singleton 作用域的 Bean 的生命周期（何时创建、何时初始化完成、何时准备要销毁）。对于 prototype 作用域的 Bean ，Spring 容器仅仅负责创建
 
 管理 Bean 的生命周期行为主要有两个时机：**注入依赖关系之后** 和 **即将销毁 Bean 之前**
 
@@ -302,6 +301,11 @@ public class Chinese {
     }
 }
 ```
+
+### Bean 的生命周期一系列关键点
+Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Spring 容器销毁 Bean，不仅仅包括 init 和 destory method，这其中包含了一系列关键点（包括 Bean 后处理器方法和 Aware 接口方法），如图：
+
+![Spring Bean的完整生命周期](/images/spring_2.png)
 
 ## 注入嵌套 Bean
 嵌套 Bean 只对它嵌套的外部 Bean 所见

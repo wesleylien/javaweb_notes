@@ -42,7 +42,7 @@ Spring 是模块化的，它的结构如图：
     **spring-instrument** 模块提供了类 instrumentation 的支持和在某些应用程序服务器使用类加载器实现。    
     **spring-instrument-tomcat** 用于 Tomcat Instrumentation 代理。    
 
-* 消息(Message)
+* 消息(Messaging)
     * spring-messaging   
 
     Spring Framework 4 包含了 **spring-messaging** 模块，从 Spring 集成项目中抽象出来，比如 Message, MessageChannel, MessageHandler 及其他用来提供基于消息的基础服务。该模块还包括一组消息映射方法的注解，类似于基于编程模型 Spring MVC 的注解。   
@@ -75,7 +75,7 @@ Spring 是模块化的，它的结构如图：
 
     **spring-test** 模块支持通过组合 JUnit 或 TestNG 来进行单元测试和集成测试 。它提供了连续的加载 ApplicationContext 并且缓存这些上下文。它还提供了 mock object（模仿对象），您可以使用隔离测试你的代码。
 
-Spring 的生态：Spring 不仅仅是 Spring 框架本身，还提供了大量基于 Spring 的项目，如：Spring MVC、Spring Boot……
+Spring 的生态：Spring 不仅仅是 Spring 框架本身，还提供了大量基于 Spring 的项目，如：Spring MVC、Spring Boot、Spring Data、Spring Cloud、Spring Security……
 
 ### Spring 框架的原则
 Spring 框架有四大原则，Spring 所有功能的设计和实现都是基于此四大原则的
