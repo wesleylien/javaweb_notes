@@ -12,7 +12,7 @@ Spring **默认使用 Java 动态代理**（代理接口）来创建 AOP 代理�
 
 Spring 目前**仅支持将方法调用作为连接点**。如果需要把对 Field 的访问和更新也作为增强处理的连接点，则需要考虑使用 AspectJ
 
-Spring 可以无缝的整合 Spring AOP、Ioc 和 AspectJ，使得所有 AOP 应用完全融入基于 Spring 的框架
+Spring 可以无缝的整合 Spring AOP、IOC 和 AspectJ，使得所有 AOP 应用完全融入基于 Spring 的框架
 
 Spring 有两种定义切入点和增强处理的方式：
 * 基于 Annotation 注解 + XML 配置(或 Java 配置)：使用 @Pointcut、@Aspect 等 Annotation 来标注切入点和切面（类），并使用如 @Before、@After、@Around 等增强处理（方法）    
