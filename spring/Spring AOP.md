@@ -25,18 +25,18 @@ Spring 有两种定义切入点和增强处理的方式：
 2. 在 xml 配置文件或 Java 配置类中加入支持
     * xml 配置文件    
         1. 引入 aop Schema   
-            ```
+            ``` xml
             xmlns:aop="http://www.springframework.org/schema/aop"
 
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
             ```
         2. 在 xml 配置文件中加入 aop 支持
-            ```
+            ``` xml
             <!-- 启动 @AspectJ 支持 -->
             <aop:aspect-autoproxy/>
             ```
             这里实际上是利用 aop Schema 简化了配置，**实际上配置了 AnnotationAwareAspectJAutoProxyCreator 这个 Bean 后处理器**，为容器中 Bean 生成 AOP 代理（上面的配置方式改为添加下面到 Spring 配置文件中是一样的）
-            ```
+            ``` xml
             <bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator"/>
             ```
             Spring 只是使用了和 AspectJ 一样的注解，但并没有 AspectJ 的编译器和织入器，底层仍然使用 Spring AOP，依然是在运行时动态生成 AOP 代理，并不依赖 AspectJ 的编译器或织入器
@@ -49,7 +49,7 @@ Spring 有两种定义切入点和增强处理的方式：
     * 编写拦截规则的注解主要是**用于在定义切点（pointcut）或者指定要执行增强处理的方法**
     * 类似于事务的 @Transactional ，用自定义的拦截规则注解需要执行增强处理的方法
     * 编写拦截规则的注解
-        ```
+        ``` java
         @Target(ElementType.METHOD)
         @Retention(RetentionPolicy.RUNTIME)
         @Documented
@@ -58,7 +58,7 @@ Spring 有两种定义切入点和增强处理的方式：
         }
         ```
 4. 待增强的方法使用拦截规则（可省略）
-    ```
+    ``` java
     @Component
     public class Bean1 {
         @Action(name="待增强的方法")
@@ -157,7 +157,7 @@ Spring 有两种定义切入点和增强处理的方式：
 基于 XML 配置文件的管理方式步骤：   
 1. 配置切面    
     使用 `<aop:aspect.../>` 元素来定义切面，其实质是将一个已有的 Bean 转化为切面 Bean
-    ```
+    ``` xml
     <bean id="afterAdviceBean" class="com.lian.AfterAdviceBean"/>
 
     <aop:config>
@@ -187,7 +187,7 @@ Spring 有两种定义切入点和增强处理的方式：
     * returning —— 属性仅对 `<aop:after-returning.../>` 元素有效，指定一个形参名   
 
     当定义切入点表达式时，一样支持 execution、within、args、this、target 和 bean 等切入点指示符，但组合运算符为：and（替代 &&）、or（替代 ||）、not（替代 !）
-    ```
+    ``` xml
     <aop:config>
         <aop:aspect id="afterAdviceAspect" ref="afterAdviceBean" order="2">
             <aop:before pointcut="execution(* com.lian.service.impl.*.*(..))" method="doBefore"/>
