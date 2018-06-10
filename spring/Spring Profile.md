@@ -13,10 +13,10 @@ Spring 通过 Profile 为在不同环境下使用不同配置提供了支持
   // 刷新容器
   context.refresh();
   ```
-2. 通过设定 jvm 的 spring.profiles.active 参数来设置配置环境 `-D spring.profiles.active=prod`
+2. 通过设定 jvm 的 spring.profiles.active 参数来设置配置环境 `-Dspring.profiles.active=prod`
   如用 Tomcat 启动 Spring MVC 则可设置 Tomcat 配置文件 `catalina.sh` 中的 JAVA_OPTS 项来设置 jvm 启动参数
   ```
-  JAVA_OPTS=" -Xms1024m -Xmx1024m  -XX:PermSize=512m -XX:MaxPermSize=512m -D spring.profiles.active=prod"
+  JAVA_OPTS=" -Xms1024m -Xmx1024m  -XX:PermSize=512m -XX:MaxPermSize=512m -Dspring.profiles.active=prod"
   ```
 3. Web 项目在 Servlet 的 context paramter 中    
   在 Servlet 2.5 及以下( web.xml )：   
