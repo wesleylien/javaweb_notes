@@ -29,7 +29,24 @@ Spring 的配置方式有：
 
 Spring 容器负责解析这些配置元数据进行 Bean 初始化、配置和依赖管理
 
-其中，xml 配置或 Java 配置是必须的，两者择其一或者两者都使用（很少），由容器负责加载。而注解配置的方式，需要在 xml 配置或 Java 配置**指定扫描路径**
+xml 配置文件导入另一 xml 配置文件
+```
+<beans ...>
+  <import resource="classpath*:/spring/job-timer.xml" />
+</beans>
+```
+
+Java 配置类导入另一 Java 配置类。只需在 Java 配置类加入 `@Import` 注解即可
+```
+@Inport(AnotherConfigurer.class)
+```
+
+其中，xml 配置或 Java 配置是必须的，两者择其一或者两者都使用，如果需要混合使用 xml 和 Java 配置方式，只需在 Java 的配置类加上 `@ImportResource` 注解即可
+```
+@ImportResource(locations={"classpath:applicationContext.xml"})
+```
+
+而注解配置的方式，需要在 xml 配置或 Java 配置**指定扫描路径**
 
 在 Spring xml 配置文件中指定搜索路径(context Schema)为：
 ``` xml

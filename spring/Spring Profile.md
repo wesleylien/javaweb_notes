@@ -1,5 +1,8 @@
 ## Profile
-Spring 通过 Profile 为在不同环境下使用不同配置提供了支持
+Spring 通过 Profile 为在不同环境下使用不同配置提供了支持    
+1. 决定加载哪个 profile 文件
+2. 决定加载哪个配置类 / xml 配置文件
+3. 决定注入哪个 Bean
 
 ### 设置 profile 的方式
 有三种设置 Profile 的方式：
