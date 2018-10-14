@@ -14,8 +14,8 @@ Java EE 应用的传统事务有两种策略：**全局事务**与**局部事务
 * 全局事务由应用服务器管理，需要底层服务器的 JTA 支持。可以跨多个事务性的资源（多个数据库）
 * **局部事务与所采用的持久化技术有关**（采用 JDBC 时，需要 Connection 对象来操作事务；采用 Hibernate 时，需要 Session 对象来操作事务）。应用服务器不需要参与事务管理，因此不能保证跨多个事务性资源的事务的正确性
 
-Spring 事务策略是通过 **PlatformTransactionManager 接口**体现的，是 Spring 事务策略的核心
-```
+Spring 事务策略是通过 **PlatformTransactionManager 接口** 体现的，是 Spring 事务策略的核心
+``` java
 public interface PlatformTransactionManager {
     // 平台无关的获取事务的方法
     // TransactionStatus 对象表示一个事务，被关联在当前执行的线程上
@@ -29,7 +29,7 @@ public interface PlatformTransactionManager {
 }
 ```
 
-**PlatformTransactionManager 是一个与任何事务策略分离的接口**，随着底层不同事务策略的切换，应用必须采用**不同的实现类**。当底层采用不同的持久化技术时，系统只需采用不同的 PlatformTransactionManager 实现类即可
+**PlatformTransactionManager 是一个与任何事务策略分离的接口**，随着底层不同事务策略的切换，应用必须采用 **不同的实现类**。当底层采用不同的持久化技术时，系统只需采用不同的 PlatformTransactionManager 实现类即可
 
 即使使用容器管理的 JTA，代码依然无需执行 JNDI 查找，无需与特定的 JTA 资源耦合在一起，通过配置文件，JTA 资源传给 PlatformTransactionManager 实现类
 
@@ -79,7 +79,7 @@ JDO | JdoTransactionManager
 分布式事务 | JtaTransactionManager
 
 ## 声明式事务管理的事务配置
-声明式事务管理无需在程序中书写任何的事务操作代码，而是通过**在 XML 文件中**为业务组件**配置事务代理**（AOP 代理的一种），AOP 为事务代理所织入的增强处理也由 Spring 提供：在目标方法执行之前，织入开始事务；在目标方法执行之后，织入结束事务
+声明式事务管理无需在程序中书写任何的事务操作代码，而是通过 **在 XML 文件中** 为业务组件 **配置事务代理**（AOP 代理的一种），AOP 为事务代理所织入的增强处理也由 Spring 提供：在目标方法执行之前，织入开始事务；在目标方法执行之后，织入结束事务
 
 ### xml 配置方式对声明式事务管理的事务配置
 1. 使用 tx Schema

@@ -1,29 +1,37 @@
-## Spring Test
+## Spring Boot Test
 * Spring 通过 Spring TestContext Framework 对集成测试提供顶级支持
 * 不依赖于特定的测试框架（如：JUnit、TestNG……）
 * `SpringJUnit4ClassRunner` 类提供了 Spring TestContext Framework 的功能（`SpringRunner` 类也是继承自 `SpringJUnit4ClassRunner`）
-* 通过 `@ContextConfiguration` 来配置 Application Context
+* 通过 `@ContextConfiguration` 载入配置类来配置 Spring 容器 Application Context
 * 通过 `@ActiveProfiles` 确定 active profile
 
 增加 Spring 测试的依赖包
-```
+``` xml
 <dependency>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-test</artifactId>
 	<scope>test</scope>
 </dependency>
 ```
-```
+配置类
+``` java
 @Configuration
 public class TestConfig {
   @Bean
   @Profile("test")
   public TestBean testBean() {
-    return new TestBean();
+    return new TestBean("test");
+  }
+
+	@Bean
+	@Profile("prod")
+	public TestBean testBean() {
+    return new TestBean("prod");
   }
 }
 ```
-```
+Test 类
+``` java
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes={TestConfig.class})
 @ActiveProfiles("test")
@@ -34,7 +42,7 @@ public class SpringTestApplicationTests {
 
 	@Test
 	public void prodProfilesTest() {
-	    Assert.assertEqual("from prod", testBean.getContent());
+	    Assert.assertEqual("test", testBean.getContent());
 	}
 
 }
@@ -42,14 +50,14 @@ public class SpringTestApplicationTests {
 
 ## Spring MVC 的测试
 测试 Web 的一些 Servlet 相关的模拟对象
-* MockMVC
-* MockHttpServletRequest
-* MockHttpServletResponse
-* MockHttpSession
+* `MockMVC`
+* `MockHttpServletRequest`
+* `MockHttpServletResponse`
+* `MockHttpSession`
 
-在 Spring 里，使用 `@WebAppConfiguration` 指定加载 ApplicationContext 是一个 WebApplicationContext
+在 Spring 里，使用 `@WebAppConfiguration` 指定加载 `ApplicationContext` 是一个 `WebApplicationContext`
 
-```
+``` java
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={MyMvcConfig.class})
 // 属性指定 Web 资源的位置，默认为 src/main/webapp

@@ -29,6 +29,7 @@ Spring 的配置方式有：
 
 Spring 容器负责解析这些配置元数据进行 Bean 初始化、配置和依赖管理
 
+### 导入其他配置
 xml 配置文件导入另一 xml 配置文件
 ```
 <beans ...>
@@ -38,17 +39,18 @@ xml 配置文件导入另一 xml 配置文件
 
 Java 配置类导入另一 Java 配置类。只需在 Java 配置类加入 `@Import` 注解即可
 ```
-@Inport(AnotherConfigurer.class)
+@Import(AnotherConfigurer.class)
 ```
 
-其中，xml 配置或 Java 配置是必须的，两者择其一或者两者都使用，如果需要混合使用 xml 和 Java 配置方式，只需在 Java 的配置类加上 `@ImportResource` 注解即可
+混合使用 xml 和 Java 配置方式，只需在 Java 的配置类加上 `@ImportResource` 注解即可
 ```
 @ImportResource(locations={"classpath:applicationContext.xml"})
 ```
 
-而注解配置的方式，需要在 xml 配置或 Java 配置**指定扫描路径**
+### 注解配置与路径扫描
+注解配置的方式不能单独存在，需要在 xml 配置或 Java 配置指定扫描路径
 
-在 Spring xml 配置文件中指定搜索路径(context Schema)为：
+在 xml 配置文件中指定搜索路径(context Schema)为：
 ``` xml
 <context-component-scan base-package="xxx.xxx">
     <context:include-filter type="" expression=""/>
@@ -63,6 +65,7 @@ Java 配置类导入另一 Java 配置类。只需在 Java 配置类加入 `@Imp
 
 ## Spring xml 配置
 Spring xml 配置文件大概形式如下：
+
 ``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- default-lazy-init 属性，指定所有 Bean 默认的延迟初始化行为 -->
@@ -73,7 +76,7 @@ Spring xml 配置文件大概形式如下：
 <!-- default-destory-method 属性，指定所有 Bean 默认的回收方法 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd>
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
     <!-- id 属性，该 Bean 唯一标识符，唯一 -->
     <!-- class 属性，该 Bean 具体实现类的全限定类名 -->
@@ -100,12 +103,12 @@ Spring xml 配置文件大概形式如下：
 		<constructor-arg value=""/>
 	</bean>
 </beans>
-```
+```   
 
 ### XML Schema
 一般情况下采用 XML Schema 来定义配置文件的语义约束
 
-在 Schema 中，只有 `spring-beans-x.x.xsd` 是 Spring 的内核，其他 Schema 大多用于简化某些方面的配置
+在 Schema 中，只有 `spring-beans-x.x.xsd` 是 Spring 的内核，其他 Schema 大多用于 **简化** 某些方面的配置
 
 基于 XML Schema 的简化配置方式   
 * p Schema，用于简化属性的配置，不需要定义 Schema，直接存在于 Spring 的内核中
@@ -160,7 +163,7 @@ Bean 的两种注入方式：设值注入（属性）和构造注入（构造器
 
 ## Spring Java 配置
 用于 Java 配置的配置类只需用 `@Configuration` 注解进行声明，并在配置类的方法中通过 `@Bean` 声明 Bean，所声明方法返回值为一个 Bean
-```
+``` java
 @Configuration
 public class JavaConfig {
     // 声明 Bean
@@ -206,7 +209,7 @@ public class JavaConfig {
 * `@Value("xxx")`
 
 **指定 Bean 的作用域**   
-* `@Scope("xxx")` —— 括号为作用域的名称
+* `@Scope("xxx")` —— 括号为作用域的名称，可选作用域见 **Bean 的作用域** 一节
 
 **指定生命周期行为**   
 * `@PostConstruct` —— 即 init-method
@@ -228,8 +231,8 @@ public class JavaConfig {
 
 此外在 Spring Batch 中还有一个 scope 属性是使用 @StepScope（而不是 @Scope）
 
-对于 request 和 session 作用域，需在 web.xml 中配置 Listener
-```
+在使用非 SpringMVC 作为 MVC 框架时，对于 request 和 session 作用域，需在 web.xml 中配置 Listener
+``` xml
 <listener>
     <linstener-class>org.springframework.web.context.request.RequestContextLinstener</linstener-class>
 </linstener>
@@ -241,7 +244,7 @@ public class JavaConfig {
 
 方法注入通常使用 lookup 方法注入，利用 lookup 方法注入可以让 Spring 容器重写容器中的 Bean 的抽象或具体方法，返回查找容器中其他 Bean 的结果。Spring 采用 CGLIB 库修改客户端的二进制码，从而实现上述的要求
 
-```
+``` java
 public class PrototypeBean {
 
     public String someMethod() {
@@ -249,7 +252,7 @@ public class PrototypeBean {
     }
 }
 ```
-```
+``` java
 public class SingletonBean {
 
     // 定义一个抽象方法，方法的返回类型是被依赖的 prototype 作用域 Bean
@@ -263,7 +266,7 @@ public class SingletonBean {
 ```
 
 xml 配置方式
-```
+``` xml
 <bean id="prototypeBean" class="com.lian.PrototypeBean" scope="prototype"/>
 
 <bean id="singletonBean" class="com.lian.SingletonBean">
@@ -272,12 +275,14 @@ xml 配置方式
 ```
 
 ## Bean 的生命周期
-Spring 可以管理 singleton 作用域的 Bean 的生命周期（何时创建、何时初始化完成、何时准备要销毁）。对于 prototype 作用域的 Bean ，Spring 容器仅仅负责创建
 
-管理 Bean 的生命周期行为主要有两个时机：**注入依赖关系之后** 和 **即将销毁 Bean 之前**
+对于 singleton 作用域的 Bean，Spring 可以管理其生命周期（何时创建、何时初始化完成、何时准备要销毁）    
+对于 prototype 作用域的 Bean，Spring 容器仅仅负责创建
+
+Spring 管理 singleton Bean 的生命周期行为主要有两个时机：**注入依赖关系之后** 和 **即将销毁 Bean 之前**
 
 通过 init-method 属性和 destory-method 属性可指定 注入依赖关系之后 和 即将销毁 Bean 之前 的处理方法
-```
+``` java
 public class Chinese {
 
     public Chinese() {
@@ -295,12 +300,12 @@ public class Chinese {
 ```
 
 xml 配置方式：指定 init-method 和 destory-method
-```
+``` xml
 <bean id="chinese" class="con.lian.Chinese" init-method="init" destory-method="close"/>
 ```
 
 注入配置方式：在 Bean 上加入注解
-```
+``` java
 public class Chinese {
 
     public Chinese() {
@@ -319,16 +324,9 @@ public class Chinese {
 }
 ```
 
-### Bean 的生命周期一系列关键点
-Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Spring 容器销毁 Bean，不仅仅包括 init 和 destory method，这其中包含了一系列关键点（包括 Bean 后处理器方法和 Aware 接口方法），如图：
-
-![Spring Bean的完整生命周期1](/images/spring_2.png)
-
-![Spring Bean的完整生命周期2](/images/spring_3.png)
-
 ## 注入嵌套 Bean
 嵌套 Bean 只对它嵌套的外部 Bean 所见
-```
+``` xml
 <property name="name">
     <bean class=""/>
 </property>
@@ -336,7 +334,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 
 ## 注入集合类
 * List
-    ```
+    ``` xml
     <property name="name">
         <list>
             <!-- 每个 value、ref、bean 都配置一个 list 元素 -->
@@ -346,7 +344,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
     </property>
     ```
 * Set
-    ```
+    ``` xml
     <property name="name">
         <set>
             <!-- 每个 value、ref、bean 都配置一个 set 元素 -->
@@ -357,7 +355,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
     </property>
     ```
 * Map
-    ```
+    ``` xml
     <property name="name">
         <map>
             <!-- 每个 entry 都配置一个 key-value 对 -->
@@ -371,7 +369,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 * 数组   
     与 List 相同
 * Properties   
-    ```
+    ``` xml
     <property name="name">
         <props>
             <prop key="身高">174</prop>
@@ -381,7 +379,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 
 ## 组合属性注入   
 可以使用组合属性的方位，为如 **属性.属性** 指定值
-```
+``` xml
 <property name="person.name" value="hahaha"/>
 ```
 为组合属性指定值时，除最后一个属性，其他属性都不能为 null
@@ -395,7 +393,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 
 子 Bean 可重新覆盖父 Bean 的配置
 
-```
+``` xml
 <bean id="being" class="com.lian.Being" abstract="true">
     <property name="sex" value="male"/>
 </bean>
@@ -409,7 +407,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 ## 强制初始化 Bean
 * Spring 默认先初始化主调 Bean，再初始化依赖 Bean
 * 假设 Bean 之间的依赖关系不够直接，可以使用 depends-on 属性强制初始化 Bean
-    ```
+    ``` xml
     <bean id="beanOne" class="com.lian.ExampleBean" depends-on="manager">
         <property name="manager" ref="manager"/>
     </bean>
@@ -419,7 +417,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 
 ## Bean 实例的创建方式
 * 使用构造器创建 Bean 实例
-    ```
+    ``` java
     // 创建 ApplicationContext 实例
     ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
     // 调用 Person 默认构造器创建实例
@@ -428,13 +426,13 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
     Person p = ctx.getBean("chinese", Person.class);
     ```
 * 使用静态工厂方法创建 Bean 实例
-    ```
+    ``` java
     public interface Being {
         public void doSomething();
     }
 
     ```
-    ```
+    ``` java
     public class Person implements Being {
         private String name;
         // getter setter
@@ -445,7 +443,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
         }
     }
     ```
-    ```
+    ``` java
     public class BeingFactory {
         // 静态方法
         public static Being getBeing(String str) {
@@ -456,7 +454,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
     }
     ```
     在 xml 配置文件中的配置
-    ```
+    ``` xml
     <!-- class 属性为静态工厂类 -->
     <!-- factory-method 属性指定静态工厂方法 -->
     <bean id="person" class="xxx.BeingFactory" factory-method="getBeing">
@@ -467,25 +465,25 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
     </bean>
     ```
     从容器中获取
-    ```
+    ``` java
     ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 
     Being b = ctx.getBean("person", Being.class);
     ```
 * 调用实例工厂方法创建 Bean 实例  
-    ```
+    ``` java
     public interface Being {
         public void doSomething();
     }
     ```
-    ```
+    ``` java
     public class Person implements Being {    
         public void doSomething() {
             ...
         }
     }
     ```
-    ```
+    ``` java
     public class BeingFactory {
         public Being getBeing(String str) {
             if (str.equals("person")) {
@@ -495,7 +493,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
     }
     ```
     在 xml 配置文件中的配置
-    ```
+    ``` xml
     <bean id="beingFactory" class="xxx.BeingFactory"/>
 
     <!-- 无须 class 属性，因为 Spring 不再直接实例化该 Bean -->
@@ -512,7 +510,7 @@ Spring Bean 的完整生命周期从创建 Spring 容器开始，直到最终 Sp
 
 当通过 `getBean()` 方法来获取工厂 Bean 时，容器返回的是工厂 Bean 的产品
 
-```
+``` java
 public class PersonFactory implements FactoryBean<Person> {
     Being p = null;
     // 实现该方法负责返回该工厂 Bean 生成的实例
@@ -533,12 +531,12 @@ public class PersonFactory implements FactoryBean<Person> {
 }
 ```
 在 xml 配置文件中的配置
-```
+``` xml
 // 这里 class 属性指向 PersonFactory 而不是 Person 类
 <bean id="person" class="xxx.PersonFactory"/>
 ```
 从容器中获取
-```
+``` java
 ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 Being b = ctx.getBean("person", Being.class);

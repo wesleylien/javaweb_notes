@@ -29,7 +29,7 @@ MyBeanPostProcessor beanPostProcessor = factory.getBean("beanPostProcessor", MyB
 factory.addBeanPostProcessor(beanPostProcessor);
 ```
 
-Spring 的两个常见的 BeanPostProcessor 接口实现类
+### Spring 的两个常见的 BeanPostProcessor 接口实现类
 * BeanNameAutoProxyCreator —— 根据 Bean 实例的 name 属性，创建 Bean 实例的代理
 * DefaultAdvisorAutoProxyCreator —— 根据提供的 Advisor ，对容器内所有的 Bean 实例创建代理
 
@@ -43,7 +43,7 @@ Spring 的两个常见的 BeanPostProcessor 接口实现类
 
 可设置多个容器后处理器，可通过 order 属性设置容器后处理器的执行顺序，此时每个容器后处理器也需要实现 Ordered 接口
 
-Spring 的四个常见的 FactoryBeanPostProcessor 接口实现类
+### Spring 的四个常见的 FactoryBeanPostProcessor 接口实现类
 * PropertyPlaceholderConfigurer —— 属性占位符配置器
     ```
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

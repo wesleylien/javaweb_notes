@@ -1,7 +1,7 @@
 * [什么是 Spring 容器](#什么是-spring-容器)
 * [实例化容器](#实例化容器)
     * [容器的初始化](#容器的初始化)
-* [从 IOC 容器中获取 Bean 实例](#从-ioc-容器中获取-bean-实例)
+* [从 IoC 容器中获取 Bean 实例](#从-ioc-容器中获取-bean-实例)
 * [为 Spring 容器注册关闭钩子](#为-spring-容器注册关闭钩子)
 * [ApplicationContext 的事件机制](#applicationContext-的事件机制)
     * [ApplicationContext 事件机制的实现](#applicationContext-事件机制的实现)
@@ -63,14 +63,13 @@ AnnotationConfigApplicationContext context = new AnnotationConfigApplicationCont
 ### 容器的初始化
 容器初始化指的是所有的Bean都被成功装载，后处理（post-processor）Bean被检测到并且激活，所有单例Bean都被预实例化，ApplicationContext容器已经可以使用
 
-## 从 IOC 容器中获取 Bean 实例
+## 从 IoC 容器中获取 Bean 实例
 ``` java
 Person person = (Person) f.getBean("person");
-```
-
-``` java
+// 或
 Person person = f.getBean(Person.class);
 ```
+
 ## 为 Spring 容器注册关闭钩子
 为 Spring 容器注册关闭钩子可保证 Spring 容器被恰当的关闭，并自动执行 singleton Bean 的析构回调方法
 ``` java
@@ -180,4 +179,4 @@ MessageSourceAware | 获得 message source，这样可以获得文本信息
 ApplicationEventPublisherAware | 应用实践发布器，可以发布事件
 ResourceLoaderAware | 获得资源加载器，可以获得外部资源文件
 
-因为 ApplicationContext 接口集成了 MessageSource 接口、ApplicationEventPublisher 接口和 ResourceLoader 接口，因此 Bean 实现 ApplicationContextAware 接口即可获得 Spring 容器的所有服务。但原则上还是用到什么接口就实现什么接口
+因为 `ApplicationContext` 接口集成了 `MessageSource` 接口、`ApplicationEventPublisher` 接口和 `ResourceLoader` 接口，因此 Bean 实现 ApplicationContextAware 接口即可获得 Spring 容器的所有服务。但原则上还是用到什么接口就实现什么接口

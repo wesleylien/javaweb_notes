@@ -8,7 +8,7 @@
 
 Spring 和其他纯 Java AOP 框架一样，在**运行时完成织入**
 
-Spring **默认使用 Java 动态代理**（代理接口）来创建 AOP 代理，也可以使用 CGLIB 代理（代理类）
+Spring **默认使用 Java 动态代理**（代理接口）来创建 AOP 代理，**也可以使用 CGLIB 代理**（代理类）
 
 Spring 目前**仅支持将方法调用作为连接点**。如果需要把对 Field 的访问和更新也作为增强处理的连接点，则需要考虑使用 AspectJ
 
@@ -33,13 +33,14 @@ Spring 有两种定义切入点和增强处理的方式：
         2. 在 xml 配置文件中加入 aop 支持
             ``` xml
             <!-- 启动 @AspectJ 支持 -->
+            <!-- Spring 只是使用了和 AspectJ 一样的注解，但并没有 AspectJ 的编译器和织入器，底层仍然使用 Spring AOP，依然是在运行时动态生成 AOP 代理，并不依赖 AspectJ 的编译器或织入器 -->
             <aop:aspect-autoproxy/>
             ```
-            这里实际上是利用 aop Schema 简化了配置，**实际上配置了 AnnotationAwareAspectJAutoProxyCreator 这个 Bean 后处理器**，为容器中 Bean 生成 AOP 代理（上面的配置方式改为添加下面到 Spring 配置文件中是一样的）
+            这里实际上是利用 aop Schema 简化了配置，**实际上配置了 AnnotationAwareAspectJAutoProxyCreator 这个 Bean 后处理器**，为容器中 Bean 生成 AOP 代理
             ``` xml
+            <!-- 上面的配置方式改为添加下面到 Spring 配置文件中是一样的 -->
             <bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator"/>
             ```
-            Spring 只是使用了和 AspectJ 一样的注解，但并没有 AspectJ 的编译器和织入器，底层仍然使用 Spring AOP，依然是在运行时动态生成 AOP 代理，并不依赖 AspectJ 的编译器或织入器
     * Java 配置类   
         在配置类的类加上注解：
         ``` java
