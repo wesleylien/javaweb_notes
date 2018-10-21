@@ -1,5 +1,3 @@
-依赖 jar 包：`commons-fileupload`、`commons-io`
-
 ## 文件上传
 ```
 <form action="upload" enctype="multipart/form-data" method="post">

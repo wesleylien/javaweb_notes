@@ -17,8 +17,8 @@ HandlerMapping、Controller 和 ViewResolver 是 WebApplicationContext 的一部
 **ViewResolver** 是 Spring MVC 视图（JSP 下就是 html）渲染的核心机制。Spring MVC 有一个接口 ViewResolver，实现该接口要重写方法 resolveViewName()，该方法返回接口 View，View 的职责是使用 model、request、response 对象，并将渲染的视图（不一定是 html，也可能是 json、xml、pdf）返回给浏览器
 
 ### 配置 DispatcherServlet
-在 Servlet 2.5 及以下，需要在 web.xml 下配置 `<servlet>` 元素
-  ```
+在 `Servlet 2.5` 及以下，需要在 `web.xml` 下配置 `<servlet>` 元素
+  ``` xml
   <filter>
   	<filter-name>encodingFilter</filter-name>
   	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -62,8 +62,8 @@ HandlerMapping、Controller 和 ViewResolver 是 WebApplicationContext 的一部
      </listener-class>
   </listener>
   ```
-  applicationContext.xml
-  ```
+  `applicationContext.xml`
+  ``` xml
   <?xml version="1.0" encoding="UTF-8"?>
   <beans
           xmlns="http://www.springframework.org/schema/beans"
@@ -83,8 +83,8 @@ HandlerMapping、Controller 和 ViewResolver 是 WebApplicationContext 的一部
 
   </beans>
   ```
-在 Servlet 3.0 可采用无 web.xml 配置方式，在 Spring MVC 里实现 WebApplicationInitializer 接口即可实现等同于 web.xml 的配置
-  ```
+在 `Servlet 3.0` 可采用无 web.xml 配置方式，在 Spring MVC 里实现 `WebApplicationInitializer` 接口即可实现等同于 web.xml 的配置
+  ``` java
   // WebApplicationInitializer 是 Spring 提供用来配置 Servlet 3.0 + 配置的接口，从而实现替代 web.xml
   // 实现此接口将会被 SpringServletContainerInitializer （用来启动 Servlet 3.0 容器）获取到
   public class WebInitializer implements WebApplicationInitializer {
@@ -104,8 +104,8 @@ HandlerMapping、Controller 和 ViewResolver 是 WebApplicationContext 的一部
     }
   }
   ```
-  MyMvcConfig.class
-  ```
+  `MyMvcConfig.class`
+  ``` java
   // @EnableWebMvc 注解会开启一些默认配置，如一些 ViewResolver 或 MessageConverter 等
   @EnableWebMvc
   @Configuration

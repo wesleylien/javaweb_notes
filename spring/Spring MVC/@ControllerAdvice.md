@@ -1,15 +1,19 @@
 通过 `@ControllerAdvice`，我们可以将对于 **控制器** 的全局配置放置在同一个位置
 
-除了 `@ExceptionHandler`，还有 `@InitBinder`（用于设置 WebDataBinder，WebDataBinder 用于自动绑定前台请求参数到 Model 中）、`@ModelAttribute`（用于绑定键值到 Model）
+除了 `@ExceptionHandler`，还有 
+* `@InitBinder`（用于设置 WebDataBinder，WebDataBinder 用于自动绑定前台请求参数到 Model 中）     
+    `@initBinder` 注解能用在在很多场景下，比如你要处理字符串用来编码防止XSS攻击，或者对参数预先做个处理……
+* `@ModelAttribute`（用于绑定键值到 Model）
 
 此外，还有 `@RestControllerAdvice`，@RestControllerAdvice 是一个组合注解，组合了 @ControllerAdvice 和 @ResponseBody，用于处理 @RestController
 
-```
+``` java
 @ControllerAdvice
-public class ExceptionHandlerAdvice {
+public class MyControllerAdvice {
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exception(Exception exception, WebRequest request) {
+        // error 页面
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView,addObject("errorMessage", exception,getMeaasge());
         return modelAndView;
@@ -25,6 +29,7 @@ public class ExceptionHandlerAdvice {
 
         // 忽略 request param 的 id
         webDataBinder.setDisallowedField("id");
+
         // 这里将请求的日期参数按照指定格式 parse 后在进行设置
         webDataBinder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
           @Override
@@ -40,5 +45,3 @@ public class ExceptionHandlerAdvice {
     }
 }
 ```
-
-`@initBinder` 注解能用在在很多场景下，比如你要处理字符串用来编码防止XSS攻击，或者对参数预先做个处理……
