@@ -61,8 +61,7 @@ public class SwaggerUser implements Serializable {
 ```
 这时 validatemessage 的属性文件默认为 classpath 下的 ValidationMessages.properties 文件    
 
-或者使用到 validator 扩展：    
-(这里使用 Hibernate Validator)
+或者使用到 validator 扩展 (这里使用 Hibernate Validator)：    
 ``` xml
 <mvc:annotation-driven validator="validator" />
 <!-- 配置校验器 -->
@@ -86,6 +85,7 @@ public class SwaggerUser implements Serializable {
     <property name="cacheSeconds" value="120"/>
 </bean>
 ```
+
 #### Java 配置方式
 ``` java
 @EnableWebMvc
@@ -106,6 +106,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
     }
 }
 ```
+
 ### 验证和验证结果
 在 Controller 对应的处理方法的对应的入参标注 **@Vaild**，并在方法的参数加上 BindingResult 或 Errors 参数中的一个，校验结果保存在该对象的实例中  
 ``` java

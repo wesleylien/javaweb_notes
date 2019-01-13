@@ -1,5 +1,5 @@
 1. Spring 配置文件设置
-    ```
+    ``` xml
     <!-- 使用LocaleResolver接口的实现类实现本地化信息的解析 -->
     <!-- LocaleResolver有三个常用的实现类：
          AcceptHeaderLocaleResolver
@@ -24,7 +24,7 @@
     ```
 2. 创建国际化资源文件 `message.zh_CN.properties`、`message.en_US.properties`
 3. 新建一个 Filter 类，并在 web.xml 中配置，用于获取当前的Locale
-    ```
+    ``` java
     public class LocaleFilter implements Filter {
         @Override
         public void init(FilterConfig filterConfig) throws ServletException {
@@ -50,7 +50,7 @@
         }
     }
     ```
-    ```
+    ``` xml
     <filter>
         <filter-name>localeFilter</filter-name>
         <filter-class>com.lian.common.filter.LocaleFilter</filter-class>

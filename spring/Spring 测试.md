@@ -1,16 +1,22 @@
-## Spring Boot Test
+## Spring Test
 * Spring 通过 Spring TestContext Framework 对集成测试提供顶级支持
-* 不依赖于特定的测试框架（如：JUnit、TestNG……）
+* Spring TestContext Framework 不依赖于特定的测试框架（如：JUnit、TestNG……）
 * `SpringJUnit4ClassRunner` 类提供了 Spring TestContext Framework 的功能（`SpringRunner` 类也是继承自 `SpringJUnit4ClassRunner`）
 * 通过 `@ContextConfiguration` 载入配置类来配置 Spring 容器 Application Context
 * 通过 `@ActiveProfiles` 确定 active profile
 
+### Spring Test 简单用例
 增加 Spring 测试的依赖包
 ``` xml
 <dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-test</artifactId>
-	<scope>test</scope>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-test</artifactId>
+    <version>${spring-framework.version}</version>
+</dependency>
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+    <version>4.11</version>
 </dependency>
 ```
 配置类
@@ -48,7 +54,7 @@ public class SpringTestApplicationTests {
 }
 ```
 
-## Spring MVC 的测试
+## Spring MVC Test
 测试 Web 的一些 Servlet 相关的模拟对象
 * `MockMVC`
 * `MockHttpServletRequest`
@@ -103,4 +109,13 @@ public class SpringTestApplicationTests {
                 .andExpect(content().string(demoService.saySomething())) // 预期返回值的内容为 demoService.saySomething() 的返回值
     }
 }
+```
+
+## Spring Boot Test
+``` xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-test</artifactId>
+	<scope>test</scope>
+</dependency>
 ```

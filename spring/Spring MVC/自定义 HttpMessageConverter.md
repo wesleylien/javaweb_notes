@@ -1,9 +1,13 @@
-HttpMessageConverter 是用来处理 request 和 response 里的数据的
+## HttpMessageConverter
+`HttpMessageConverter` 是用来处理 request 和 response 里的数据的
 
-Spring 内置了大量的 HttpMessageConverter，如 MappingJackson2HttpMessageConverter、StringHttpMessageConverter……
+对于 response，想要返回 convert 后的结果，需要在处理请求方法加上 `@ResponseBody` Annotation
+
+Spring 内置了大量的 `HttpMessageConverter`，如 `MappingJackson2HttpMessageConverter`、`StringHttpMessageConverter`……
+更多可查看 [Spring MVC 常用注解 - ResponseBody 注解类]()
 
 ## 自定义 HttpMessageConverter
-```
+``` java
 public class MyHttpMessageConverter extends AbstractHttpMessageConverter<DemoObject> {
 
     public MyHttpMessageConverter() {
@@ -12,7 +16,7 @@ public class MyHttpMessageConverter extends AbstractHttpMessageConverter<DemoObj
         super(new MediaType("application", "x-lianwx", Charset.forName("UTF-8")));
     }
 
-    // 自定义 HttpMessageConverter 支持的类
+    // 自定义 HttpMessageConverter 支持处理的类
     @Override
     protected boolean supports(Class<?> clazz) {
 
@@ -44,7 +48,7 @@ public class MyHttpMessageConverter extends AbstractHttpMessageConverter<DemoObj
 * configureMessageConverters 会覆盖掉 Spring MVC 默认注册的 HttpMessageConverter
 * extendsMessageConverters 仅添加一个自定义的 HttpMessageConverter
 
-```
+``` java
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.lian")

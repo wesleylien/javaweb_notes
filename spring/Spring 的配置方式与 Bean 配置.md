@@ -30,38 +30,34 @@ Spring 的配置方式有：
 Spring 容器负责解析这些配置元数据进行 Bean 初始化、配置和依赖管理
 
 ### 导入其他配置
-xml 配置文件导入另一 xml 配置文件
-```
-<beans ...>
-  <import resource="classpath*:/spring/job-timer.xml" />
-</beans>
-```
-
-Java 配置类导入另一 Java 配置类。只需在 Java 配置类加入 `@Import` 注解即可
-```
-@Import(AnotherConfigurer.class)
-```
-
-混合使用 xml 和 Java 配置方式，只需在 Java 的配置类加上 `@ImportResource` 注解即可
-```
-@ImportResource(locations={"classpath:applicationContext.xml"})
-```
+1. xml 配置文件导入另一 xml 配置文件    
+    ``` xml
+    <beans ...>
+    <import resource="classpath*:/spring/job-timer.xml" />
+    </beans>
+    ```
+2. Java 配置类导入另一 Java 配置类。只需在 Java 配置类加入 `@Import` 注解即可    
+    ``` java
+    @Import(AnotherConfigurer.class)
+    ```
+3. 混合使用 xml 和 Java 配置方式，只需在 Java 的配置类加上 `@ImportResource` 注解即可    
+    ``` java
+    @ImportResource(locations={"classpath:applicationContext.xml"})
+    ```
 
 ### 注解配置与路径扫描
-注解配置的方式不能单独存在，需要在 xml 配置或 Java 配置指定扫描路径
-
-在 xml 配置文件中指定搜索路径(context Schema)为：
-``` xml
-<context-component-scan base-package="xxx.xxx">
-    <context:include-filter type="" expression=""/>
-    <context:exclude-filter type="" expression=""/>
-</context-component-scan>
-```
-
-在 Java 配置类中只需要对类进行如下注解：
-``` java
-@componentScan("xxx.xxx")
-```
+注解配置的方式不能单独存在，需要在 xml 配置或 Java 配置指定扫描路径      
+1. 在 xml 配置文件中指定搜索路径(context Schema)为：    
+    ``` xml
+    <context-component-scan base-package="xxx.xxx">
+        <context:include-filter type="" expression=""/>
+        <context:exclude-filter type="" expression=""/>
+    </context-component-scan>
+    ```
+2. 在 Java 配置类中只需要对类进行如下注解：     
+    ``` java
+    @componentScan("xxx.xxx")
+    ```
 
 ## Spring xml 配置
 Spring xml 配置文件大概形式如下：
@@ -192,6 +188,20 @@ public class JavaConfig {
 }
 ```
 
+当注入同一类的多个 Bean 时，可用 `@Primary` 表示优先考虑被注解的对象注入
+``` java
+@Bean
+@Primary
+public Bean1 bean1() {
+    return new Bean1();
+}
+
+@Bean
+public Bean1 bean2() {
+    return new Bean1();
+}
+```
+
 ## Spring 注解配置
 **声明 Bean 的注解**   
 * `@Component("xxx")` —— 通用，括号指定 id ，括号可省略（默认为首字母小写的类名）
@@ -201,12 +211,33 @@ public class JavaConfig {
 
 **注入依赖的注解**
 * `@Resource(name="")` —— JSR-250提供的注解，name 指定需要注入的实例的id，可用于修饰 Field 或者 setter 方法
-* `@Autowired` —— Spring 提供的注解，用于自动装配，可用于修饰 Field 或者 setter 方法
-    * 可配合 @Qualifier 注解实现精确装配
+* `@Autowired` —— Spring 提供的注解，用于自动装配，可用于修饰 Field 或者 setter 方法。默认为 byType 自动装配。`@Autowired` 是依靠 `AutowiredAnnotationBeanProcessor` 完成 Bean 的自动配置的      
+    在使用 `@Autowired` 但又找不到匹配 Bean 时，Spring 容器将抛出 `BeanCreationException` 异常，并指出必须至少拥有一个匹配的 Bean，除非指定 `@Autowired(required = false)`    
+    当可匹配的 Bean 大于一个时，Spring 容器在启动时也会抛出 `BeanCreationException` 异常，除了可通过 `@Primary` 指定优先注入的 Bean，还可以配合 `@Qualifier` 来消除混乱    
+    ``` java
+    @Bean
+    public Bean1 bean1() {
+        return new Bean1();
+    }
+
+    @Bean
+    public Bean1 bean2() {
+        return new Bean1();
+    }
+    ```
+    ``` java
+    @Autowired
+    @Qualifier("bean1")
+    private Bean1 bean;
+    ```
+
 * `@Inject` —— JSR-330 提供的注解
 
 **注入值**
-* `@Value("xxx")`
+* `@Value("xxx")`   
+    * 注入默认值 `@Value("xxx")`
+    * 可配合配置文件注入值，如 `@Value("${aaa.bbb}")`
+    * 可配合配置文件注入值，并且在配置文件没有注入时注入默认值，如 `@Value("${aaa.bbb:default}")`
 
 **指定 Bean 的作用域**   
 * `@Scope("xxx")` —— 括号为作用域的名称，可选作用域见 **Bean 的作用域** 一节

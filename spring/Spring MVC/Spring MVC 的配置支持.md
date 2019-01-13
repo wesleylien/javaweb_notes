@@ -1,5 +1,7 @@
+## Spring MVC 配置
 * Spring MVC 的定制配置需要我们的配置类继承一个 `WebMvcConfigurerAdapter` 抽象类，并使用 `@EnableWebMvc` 注解来开启对 Spring MVC 的配置支持
-* `WebMvcConfigurerAdapter` 类也实现了 `WebMvcConfigurer` 接口，所以 WebMvcConfigurer 的 API 内方法也可以用来配置 MVC
+* `@EnableWebMvc` 注解会开启一些默认的配置，如一些 `ViewResolver` 和 `MessageConverter` 等。此外，在继承 `WebMvcConfigurerAdapter` 的类需要加上 `@EnableWebMvc` 开启 Spring MVC 支持，否则重写 `WebMvcConfigurerAdapter` 方法无效    
+* `WebMvcConfigurerAdapter` 类也实现了 `WebMvcConfigurer` 接口，所以 `WebMvcConfigurer` 的 API 内方法也可以用来配置 MVC
 * Spring Boot 启动类的组合注解 `@SpringBootApplication` 中包含 `@EnableAutoConfiguration` 启动了自动配置，包含对 Spring MVC 的默认配置     
   如 Spring Boot 对 Spring MVC 的静态资源的自动配置，静态资源默认放置在 /src/main/resources/static 下
 * Spring Boot 下使用 `@EnableWebMvc` 会使对 Spring MVC 的自动配置失效
@@ -366,3 +368,14 @@ public interface WebMvcConfigurer {
 
 }
 ```
+
+## Spring MVC 配置举例
+[Spring MVC 静态资源映射]()
+
+[Spring MVC 拦截器]()
+
+[快捷的 ViewController]()
+
+[路径匹配参数配置]()
+
+[自定义 HttpMessageConverter]()
